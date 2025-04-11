@@ -21,8 +21,6 @@ Signed-off-by: Palmer Dabbelt <palmerdabbelt@google.com>
  include/linux/dma-heap.h   |  9 +++++++++
  2 files changed, 29 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/dma-buf/dma-heap.c b/drivers/dma-buf/dma-heap.c
-index 84ae708fa..ec4414894 100644
 --- a/drivers/dma-buf/dma-heap.c
 +++ b/drivers/dma-buf/dma-heap.c
 @@ -31,6 +31,7 @@
@@ -41,7 +39,7 @@ index 84ae708fa..ec4414894 100644
  };
  
  static LIST_HEAD(heap_list);
-@@ -216,10 +218,21 @@ const char *dma_heap_get_name(struct dma_heap *heap)
+@@ -216,10 +218,21 @@ const char *dma_heap_get_name(struct dma
  	return heap->name;
  }
  
@@ -64,7 +62,7 @@ index 84ae708fa..ec4414894 100644
  	unsigned int minor;
  	int ret;
  
-@@ -261,17 +274,20 @@ struct dma_heap *dma_heap_add(const struct dma_heap_export_info *exp_info)
+@@ -261,17 +274,20 @@ struct dma_heap *dma_heap_add(const stru
  		goto err1;
  	}
  
@@ -88,15 +86,12 @@ index 84ae708fa..ec4414894 100644
  	mutex_lock(&heap_list_lock);
  	/* check the name is unique */
  	list_for_each_entry(h, &heap_list, list) {
-diff --git a/include/linux/dma-heap.h b/include/linux/dma-heap.h
-index 0c05561ca..ca83d0e7f 100644
 --- a/include/linux/dma-heap.h
 +++ b/include/linux/dma-heap.h
-@@ -59,6 +59,15 @@ void *dma_heap_get_drvdata(struct dma_heap *heap);
-  */
+@@ -60,6 +60,15 @@ void *dma_heap_get_drvdata(struct dma_he
  const char *dma_heap_get_name(struct dma_heap *heap);
  
-+/**
+ /**
 + * dma_heap_get_dev() - get device struct for the heap
 + * @heap: DMA-Heap to retrieve device struct from
 + *
@@ -105,9 +100,7 @@ index 0c05561ca..ca83d0e7f 100644
 + */
 +struct device *dma_heap_get_dev(struct dma_heap *heap);
 +
- /**
++/**
   * dma_heap_add - adds a heap to dmabuf heaps
   * @exp_info:		information needed to register this heap
--- 
-2.46.0
-
+  */

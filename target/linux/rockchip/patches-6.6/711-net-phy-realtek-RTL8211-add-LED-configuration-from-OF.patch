@@ -4,22 +4,20 @@ Date: Mon, 3 Apr 2023 23:26:04 +0800
 Subject: [PATCH] net: phy: realtek: add LED configuration from OF for 8211f
 
 ---
- drivers/net/phy/realtek.c | 20 ++++++++++++++++++++
+ drivers/net/phy/realtek/realtek_main.c | 20 ++++++++++++++++++++
  1 file changed, 20 insertions(+)
 
-diff --git a/drivers/net/phy/realtek.c b/drivers/net/phy/realtek.c
-index cdcdd5d36..126d4819f 100644
---- a/drivers/net/phy/realtek.c
-+++ b/drivers/net/phy/realtek.c
+--- a/drivers/net/phy/realtek/realtek_main.c
++++ b/drivers/net/phy/realtek/realtek_main.c
 @@ -13,6 +13,7 @@
  #include <linux/module.h>
  #include <linux/delay.h>
  #include <linux/clk.h>
 +#include <linux/of.h>
  
- #define RTL821x_PHYSR				0x11
- #define RTL821x_PHYSR_DUPLEX			BIT(13)
-@@ -28,6 +29,8 @@
+ #include "realtek.h"
+ 
+@@ -30,6 +31,8 @@
  #define RTL821x_EXT_PAGE_SELECT			0x1e
  #define RTL821x_PAGE_SELECT			0x1f
  
@@ -28,7 +26,7 @@ index cdcdd5d36..126d4819f 100644
  #define RTL8211F_PHYCR1				0x18
  #define RTL8211F_PHYCR2				0x19
  #define RTL8211F_INSR				0x1d
-@@ -374,11 +377,25 @@ static int rtl8211c_config_init(struct phy_device *phydev)
+@@ -377,11 +380,25 @@ static int rtl8211c_config_init(struct p
  			    CTL1000_ENABLE_MASTER | CTL1000_AS_MASTER);
  }
  
@@ -54,7 +52,7 @@ index cdcdd5d36..126d4819f 100644
  	int ret;
  
  	ret = phy_modify_paged_changed(phydev, 0xa43, RTL8211F_PHYCR1,
-@@ -390,6 +407,9 @@ static int rtl8211f_config_init(struct phy_device *phydev)
+@@ -393,6 +410,9 @@ static int rtl8211f_config_init(struct p
  		return ret;
  	}
  
@@ -64,6 +62,3 @@ index cdcdd5d36..126d4819f 100644
  	switch (phydev->interface) {
  	case PHY_INTERFACE_MODE_RGMII:
  		val_txdly = 0;
--- 
-2.46.0
-
