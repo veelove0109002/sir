@@ -133,6 +133,16 @@
 		vin-supply = <&vcc12v_dcin>;
 	};
 
+	vcc3v3_sys: vcc3v3-sys {
+		compatible = "regulator-fixed";
+		regulator-always-on;
+		regulator-boot-on;
+		regulator-min-microvolt = <3300000>;
+		regulator-max-microvolt = <3300000>;
+		regulator-name = "vcc3v3_sys";
+		vin-supply = <&vcc12v_dcin>;
+	};
+
 	vcc_1v1_nldo_s3: vcc-1v1-nldo-s3 {
 		compatible = "regulator-fixed";
 		regulator-always-on;
@@ -190,15 +200,17 @@
 		vin-supply = <&vcc5v0_usb>;
 	};
 
-	vcc5v0_usb_hub: vcc5v0-usb-hub {
+	reset_usb_hub: reset-usb-hub {
 		compatible = "regulator-fixed";
 		enable-active-high;
 		gpio = <&gpio4 RK_PA6 GPIO_ACTIVE_HIGH>;
 		pinctrl-names = "default";
-		pinctrl-0 = <&vcc5v0_usb_hub_en>;
-		regulator-name = "vcc5v0_usb_hub";
+		pinctrl-0 = <&reset_usb_hub_en>;
+		regulator-name = "reset_usb_hub";
+		regulator-boot-on;
 		regulator-always-on;
-		vin-supply = <&vcc5v0_usb>;
+		startup-delay-us = <5000>;
+		vin-supply = <&vcc3v3_sys>;
 	};
 
 	vcc5v0_usb_otg: vcc5v0-usb-otg {
@@ -548,8 +560,8 @@
 			rockchip,pins = <4 RK_PB0 RK_FUNC_GPIO &pcfg_pull_none>;
 		};
 
-		vcc5v0_usb_hub_en: vcc5v0_usb_hub_en {
-			rockchip,pins = <4 RK_PA6 RK_FUNC_GPIO &pcfg_pull_none>;
+		reset_usb_hub_en: reset_usb_hub_en {
+			rockchip,pins = <4 RK_PA6 RK_FUNC_GPIO &pcfg_output_low>;
 		};
 
 		vcc5v0_usb_otg_en: vcc5v0_usb_otg_en {
