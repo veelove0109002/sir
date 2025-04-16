@@ -23,6 +23,15 @@ $(call Device/Legacy/rk3568,$(1))
 endef
 TARGET_DEVICES += easepi_r1
 
+define Device/easepi_r1-lite
+$(call Device/Legacy/rk3568,$(1))
+  DEVICE_VENDOR := EasePi
+  DEVICE_MODEL := R1 (4xGbE)
+  DEVICE_DTS := rk3568/rk3568-easepi-r1-lite
+  DEVICE_PACKAGES += kmod-r8169 kmod-nvme
+endef
+TARGET_DEVICES += easepi_r1-lite
+
 define Device/easepi_ars4
 $(call Device/Legacy/rk3568,$(1))
   DEVICE_VENDOR := EasePi
