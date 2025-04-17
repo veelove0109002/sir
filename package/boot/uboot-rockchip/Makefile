@@ -136,6 +136,13 @@ define U-Boot/nanopi-r4s-rk3399
     friendlyarm_nanopi-r4s-enterprise
 endef
 
+define U-Boot/nanopi-r4se-rk3399
+  $(U-Boot/rk3399/Default)
+  NAME:=NanoPi R4SE
+  BUILD_DEVICES:= \
+	friendlyarm_nanopi-r4se
+endef
+
 define U-Boot/rock-pi-4-rk3399
   $(U-Boot/rk3399/Default)
   NAME:=Rock Pi 4
@@ -318,6 +325,7 @@ endef
 UBOOT_TARGETS := \
   nanopc-t4-rk3399 \
   nanopi-r4s-rk3399 \
+  nanopi-r4se-rk3399 \
   rock-pi-4-rk3399 \
   rockpro64-rk3399 \
   rock-pi-s-rk3308 \
