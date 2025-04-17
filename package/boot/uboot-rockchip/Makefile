@@ -204,6 +204,12 @@ define U-Boot/easepi-rk3568
   DEFAULT:=y
 endef
 
+define U-Boot/easepi-rk3568-rk809
+  $(U-Boot/rk3568/Default)
+  NAME:=Easepi RK3568 with RK809
+  DEFAULT:=y
+endef
+
 define U-Boot/bpi-r2-pro-rk3568
   $(U-Boot/rk3568/Default)
   NAME:=Bananapi-R2 Pro
@@ -329,6 +335,7 @@ UBOOT_TARGETS := \
   radxa-zero-3-rk3566 \
   rock-3c-rk3566 \
   easepi-rk3568 \
+  easepi-rk3568-rk809 \
   bpi-r2-pro-rk3568 \
   nanopi-r5c-rk3568 \
   nanopi-r5s-rk3568 \
