@@ -52,6 +52,13 @@ $(call Device/Legacy/rk3568,$(1))
 endef
 TARGET_DEVICES += fastrhino_r6xs
 
+define Device/friendlyarm_nanopi-r3s
+$(call Device/Legacy/rk3566,$(1))
+  DEVICE_VENDOR := FriendlyARM
+  DEVICE_MODEL := NanoPi R3S
+  DEVICE_PACKAGES += kmod-r8169
+endef
+
 define Device/friendlyarm_nanopi-r5c
 $(call Device/Legacy/rk3568,$(1))
   DEVICE_VENDOR := FriendlyARM
