@@ -1,4 +1,4 @@
-From e80bb0701dbd56d2a31f3edd79bc3c019e9ca2eb Mon Sep 17 00:00:00 2001
+From efa5038c8d5b1502022e8a7e7335230b6e1ac44b Mon Sep 17 00:00:00 2001
 From: jjm2473 <jjm2473@gmail.com>
 Date: Thu, 16 Jan 2025 18:12:37 +0800
 Subject: [PATCH] header: linux/module.h: move trace and bpf to the end of
@@ -6,13 +6,15 @@ Subject: [PATCH] header: linux/module.h: move trace and bpf to the end of
 
 linux/sched.h: move tracing to the end of struct
 ---
- include/linux/module.h | 68 ++++++++++++++++++++++--------------------
- include/linux/sched.h  | 24 +++++++--------
- 2 files changed, 48 insertions(+), 44 deletions(-)
+ include/linux/module.h | 71 ++++++++++++++++++++++--------------------
+ include/linux/sched.h  | 24 +++++++-------
+ 2 files changed, 50 insertions(+), 45 deletions(-)
 
+diff --git a/include/linux/module.h b/include/linux/module.h
+index 66362f8c8..1069fd05a 100644
 --- a/include/linux/module.h
 +++ b/include/linux/module.h
-@@ -486,22 +486,34 @@ struct module {
+@@ -486,26 +486,39 @@ struct module {
  	void *noinstr_text_start;
  	unsigned int noinstr_text_size;
  
@@ -27,14 +29,20 @@ linux/sched.h: move tracing to the end of struct
 -#ifdef CONFIG_BPF_EVENTS
 -	unsigned int num_bpf_raw_events;
 -	struct bpf_raw_event_map *bpf_raw_events;
+-#endif
+-#ifdef CONFIG_DEBUG_INFO_BTF_MODULES
+-	unsigned int btf_data_size;
+-	void *btf_data;
 +
 +#ifdef CONFIG_HAVE_STATIC_CALL_INLINE
 +	int num_static_call_sites;
 +	struct static_call_site *static_call_sites;
  #endif
--#ifdef CONFIG_DEBUG_INFO_BTF_MODULES
--	unsigned int btf_data_size;
--	void *btf_data;
++
+ #ifdef CONFIG_JUMP_LABEL
+ 	struct jump_entry *jump_entries;
+ 	unsigned int num_jump_entries;
+ #endif
 +
 +#ifdef CONFIG_MODULE_UNLOAD
 +	/* What modules depend on me? */
@@ -46,7 +54,7 @@ linux/sched.h: move tracing to the end of struct
 +	void (*exit)(void);
 +
 +	atomic_t refcnt;
- #endif
++#endif
 +
 +#ifdef CONFIG_CONSTRUCTORS
 +	/* Constructor functions. */
@@ -54,10 +62,10 @@ linux/sched.h: move tracing to the end of struct
 +	unsigned int num_ctors;
 +#endif
 +
- #ifdef CONFIG_JUMP_LABEL
- 	struct jump_entry *jump_entries;
- 	unsigned int num_jump_entries;
-@@ -526,10 +538,7 @@ struct module {
+ #ifdef CONFIG_TRACING
+ 	unsigned int num_trace_bprintk_fmt;
+ 	const char **trace_bprintk_fmt_start;
+@@ -526,10 +539,7 @@ struct module {
  	unsigned long *kprobe_blacklist;
  	unsigned int num_kprobe_blacklist;
  #endif
@@ -69,7 +77,7 @@ linux/sched.h: move tracing to the end of struct
  #if IS_ENABLED(CONFIG_KUNIT)
  	int num_kunit_suites;
  	struct kunit_suite **kunit_suites;
-@@ -549,24 +558,6 @@ struct module {
+@@ -549,24 +559,6 @@ struct module {
  	struct pi_entry **printk_index_start;
  #endif
  
@@ -94,7 +102,7 @@ linux/sched.h: move tracing to the end of struct
  #ifdef CONFIG_FUNCTION_ERROR_INJECTION
  	struct error_injection_entry *ei_funcs;
  	unsigned int num_ei_funcs;
-@@ -575,6 +566,19 @@ struct module {
+@@ -575,6 +567,19 @@ struct module {
  	struct _ddebug_info dyndbg_info;
  #endif
  
@@ -114,6 +122,8 @@ linux/sched.h: move tracing to the end of struct
  #ifdef CONFIG_KALLSYMS
  	/* Protected by RCU and/or module_mutex: use rcu_dereference() */
  	struct mod_kallsyms __rcu *kallsyms;
+diff --git a/include/linux/sched.h b/include/linux/sched.h
+index 4809f27b5..10a58fdd2 100644
 --- a/include/linux/sched.h
 +++ b/include/linux/sched.h
 @@ -1407,11 +1407,6 @@ struct task_struct {
@@ -161,3 +171,6 @@ linux/sched.h: move tracing to the end of struct
  	/*
  	 * New fields for task_struct should be added above here, so that
  	 * they are included in the randomized portion of task_struct.
+-- 
+2.46.0
+
