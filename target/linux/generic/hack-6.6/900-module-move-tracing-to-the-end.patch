@@ -1,4 +1,4 @@
-From efa5038c8d5b1502022e8a7e7335230b6e1ac44b Mon Sep 17 00:00:00 2001
+From b1106f22d268bb30a4b3f405b2c0fdcbe5427a1a Mon Sep 17 00:00:00 2001
 From: jjm2473 <jjm2473@gmail.com>
 Date: Thu, 16 Jan 2025 18:12:37 +0800
 Subject: [PATCH] header: linux/module.h: move trace and bpf to the end of
@@ -6,12 +6,12 @@ Subject: [PATCH] header: linux/module.h: move trace and bpf to the end of
 
 linux/sched.h: move tracing to the end of struct
 ---
- include/linux/module.h | 71 ++++++++++++++++++++++--------------------
+ include/linux/module.h | 73 ++++++++++++++++++++++--------------------
  include/linux/sched.h  | 24 +++++++-------
- 2 files changed, 50 insertions(+), 45 deletions(-)
+ 2 files changed, 51 insertions(+), 46 deletions(-)
 
 diff --git a/include/linux/module.h b/include/linux/module.h
-index 66362f8c8..1069fd05a 100644
+index 66362f8c8..77c1cd423 100644
 --- a/include/linux/module.h
 +++ b/include/linux/module.h
 @@ -486,26 +486,39 @@ struct module {
@@ -33,16 +33,17 @@ index 66362f8c8..1069fd05a 100644
 -#ifdef CONFIG_DEBUG_INFO_BTF_MODULES
 -	unsigned int btf_data_size;
 -	void *btf_data;
-+
-+#ifdef CONFIG_HAVE_STATIC_CALL_INLINE
-+	int num_static_call_sites;
-+	struct static_call_site *static_call_sites;
- #endif
+-#endif
 +
  #ifdef CONFIG_JUMP_LABEL
  	struct jump_entry *jump_entries;
  	unsigned int num_jump_entries;
  #endif
++
++#ifdef CONFIG_HAVE_STATIC_CALL_INLINE
++	int num_static_call_sites;
++	struct static_call_site *static_call_sites;
++#endif
 +
 +#ifdef CONFIG_MODULE_UNLOAD
 +	/* What modules depend on me? */
