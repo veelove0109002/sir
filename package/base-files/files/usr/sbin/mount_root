@@ -204,8 +204,7 @@ clean_pkg_content() {
 }
 
 pkg_depends_rec() {
-	local overlay="$1"
-	local pkgname="$2"
+	local pkgname="$1"
 	local line
 	local dep
 	local deps
@@ -214,13 +213,27 @@ pkg_depends_rec() {
 
 	if [ -f /usr/lib/opkg/info/${pkgname}.control -a ! -f /tmp/reset_core_packages/${pkgname} ]; then
 		deps=`grep '^Depends: ' /usr/lib/opkg/info/${pkgname}.control | sed -e 's/^Depends: //' -e 's/ ([^)]*)//g' -e 's/,/ /g'`
-		# avoid loop deps
-		rm -f $overlay/upper/usr/lib/opkg/info/${pkgname}.control
 		touch /tmp/reset_core_packages/${pkgname}
 		for dep in $deps ; do
-			pkg_depends_rec "$overlay" "$dep"
+			pkg_depends_rec "$dep"
 		done
 	fi
+}
+
+list_core_packages()
+{
+	local pkg
+	mkdir -p /tmp/reset_core_packages
+	for pkg in \
+		luci-compat luci-lua-runtime luci-lib-base luci-base uhttpd luci-ssl-openssl \
+		rpcd procd \
+		netifd dnsmasq-full dnsmasq firewall4 \
+		block-mount \
+		curl \
+		ttyd kernel
+	do
+		pkg_depends_rec $pkg
+	done
 }
 
 reset_core_packages()
@@ -229,24 +242,12 @@ reset_core_packages()
 	local running_ver=$(grep 'DISTRIB_RELEASE=' /etc/openwrt_release 2>/dev/null | sed -E "s/.*='(.+)'.*/\1/")
 	[ "v$(cat "$overlay/.upgrading" 2>/dev/null)" = "v$running_ver" ] && return
 	local pkg
-	rm -rf /tmp/reset_core_packages
-	mkdir -p /tmp/reset_core_packages
-	for pkg in \
-		luci-compat luci-lua-runtime luci-lib-base luci-base uhttpd \
-		rpcd procd \
-		netifd dnsmasq-full dnsmasq firewall4 \
-		block-mount \
-		curl \
-		ttyd kernel
-	do
-		pkg_depends_rec "$overlay" $pkg
-	done
+	[ -d /tmp/reset_core_packages ] || list_core_packages
 	log "Reset packages in $overlay: `ls /tmp/reset_core_packages/ | xargs echo`"
 	ls /tmp/reset_core_packages/ | while read; do
 		pkg="$REPLY"
 		clean_pkg_content "$overlay" $pkg
 	done
-	rm -rf /tmp/reset_core_packages
 }
 
 clean_kmods()
@@ -436,6 +437,7 @@ prepare_mnt()
 			umount /tmp/extroot/overlay
 		fi
 	fi
+	rm -rf /tmp/reset_core_packages
 
 	mount -o noatime,lowerdir=$lowerdir,upperdir=$overlaydir/upper,workdir=$overlaydir/work \
 		-t overlay "overlayfs:/overlay" /mnt \
@@ -482,6 +484,8 @@ do_mount_overlayfs()
 		rm -f /rom/note >/dev/null 2>&1
 		return 0
 	fi
+
+	rm -rf /tmp/reset_core_packages
 
 	inlog prepare_primary_overlay
 
