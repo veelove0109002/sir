@@ -254,7 +254,7 @@ reset_core_packages()
 	[ "v$(cat "$overlay/.upgrading" 2>/dev/null)" = "v$running_ver" ] && return
 	local pkg
 	[ -d /tmp/reset_core_packages ] || list_core_packages
-	log "Reset packages in $overlay: `ls /tmp/reset_core_packages/ | xargs echo`"
+	echo "Reset packages in $overlay: `ls /tmp/reset_core_packages/ | xargs echo`" | dd bs=960 2>/dev/null
 	ls /tmp/reset_core_packages/ | while read; do
 		pkg="$REPLY"
 		clean_pkg_content "$overlay" $pkg
@@ -286,7 +286,7 @@ clean_kmods()
 			rm -f /tmp/safe_kmods.txt
 
 			if [ -s /tmp/del_kmods.txt ]; then
-				log "Clean kmods in $1: `cat /tmp/del_kmods.txt | xargs echo`"
+				echo "Clean kmods in $1: `cat /tmp/del_kmods.txt | xargs echo`" | dd bs=960 2>/dev/null
 
 				cat /tmp/del_kmods.txt | sed 's/$/.list/' | xargs cat | sed "s#^/#$1/upper/#" | xargs -r rm -f
 				cat /tmp/del_kmods.txt | xargs -rn1 sh -c 'rm -f $0.list $0.prerm $0.postinst'
