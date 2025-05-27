@@ -230,7 +230,7 @@ list_core_packages()
 		netifd dnsmasq-full dnsmasq firewall4 \
 		block-mount \
 		curl \
-		ttyd kernel
+		ttyd dropbear kernel
 	do
 		pkg_depends_rec $pkg
 	done
