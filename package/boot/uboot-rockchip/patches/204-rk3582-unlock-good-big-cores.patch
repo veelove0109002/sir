@@ -1,0 +1,28 @@
+From 1db20ba9b8e91ade04e0bf1cea159127ccab42b3 Mon Sep 17 00:00:00 2001
+From: Liangbin Lian <jjm2473@gmail.com>
+Date: Wed, 11 Jun 2025 17:01:10 +0800
+Subject: [PATCH] rockchip: rk3588: unlock good big cores in RK3582
+
+---
+ arch/arm/mach-rockchip/rk3588/rk3588.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/arch/arm/mach-rockchip/rk3588/rk3588.c b/arch/arm/mach-rockchip/rk3588/rk3588.c
+index 1db0101d6da..3c800c30b11 100644
+--- a/arch/arm/mach-rockchip/rk3588/rk3588.c
++++ b/arch/arm/mach-rockchip/rk3588/rk3588.c
+@@ -317,9 +317,11 @@ int ft_system_setup(void *blob, struct bd_info *bd)
+ 		/* policy: always disable vdec */
+ 		ip_state[1] |= BAD_VDEC;
+ 
++#if 0
+ 		/* policy: always disable one big core cluster */
+ 		if (!(ip_state[0] & (BAD_CPU_CLUSTER1 | BAD_CPU_CLUSTER2)))
+ 			ip_state[0] |= BAD_CPU_CLUSTER2;
++#endif
+ 	}
+ 
+ 	if (ip_state[0] & BAD_CPU_CLUSTER1) {
+-- 
+2.46.0
+

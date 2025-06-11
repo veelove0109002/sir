@@ -1,0 +1,78 @@
+From 00f76e94d0b9472b5deb045dc417e191a4abbb7d Mon Sep 17 00:00:00 2001
+From: Liangbin Lian <jjm2473@gmail.com>
+Date: Wed, 11 Jun 2025 16:55:37 +0800
+Subject: [PATCH] rockchip: rk3588: disable bad vpu in RK3582
+
+---
+ arch/arm/mach-rockchip/rk3588/rk3588.c | 38 ++++++++++++++++++++++++++
+ 1 file changed, 38 insertions(+)
+
+diff --git a/arch/arm/mach-rockchip/rk3588/rk3588.c b/arch/arm/mach-rockchip/rk3588/rk3588.c
+index 1e660cc24d4..1db0101d6da 100644
+--- a/arch/arm/mach-rockchip/rk3588/rk3588.c
++++ b/arch/arm/mach-rockchip/rk3588/rk3588.c
+@@ -193,6 +193,14 @@ int arch_cpu_init(void)
+ #define BAD_CPU_CLUSTER2		GENMASK(7, 6)
+ #define BAD_GPU				GENMASK(4, 1)
+ 
++#define BAD_VDEC0			(1<<6)
++#define BAD_VDEC1			(1<<7)
++#define BAD_VDEC			(BAD_VDEC0|BAD_VDEC1)
++
++#define BAD_VENC0			(1<<0)
++#define BAD_VENC1			(1<<2)
++#define BAD_VENC			(BAD_VENC0|BAD_VENC1)
++
+ int checkboard(void)
+ {
+ 	u8 cpu_code[2], specification, package;
+@@ -306,6 +314,8 @@ int ft_system_setup(void *blob, struct bd_info *bd)
+ 	if (cpu_code[0] == 0x35 && cpu_code[1] == 0x82) {
+ 		/* policy: always disable gpu */
+ 		ip_state[1] |= BAD_GPU;
++		/* policy: always disable vdec */
++		ip_state[1] |= BAD_VDEC;
+ 
+ 		/* policy: always disable one big core cluster */
+ 		if (!(ip_state[0] & (BAD_CPU_CLUSTER1 | BAD_CPU_CLUSTER2)))
+@@ -330,9 +340,37 @@ int ft_system_setup(void *blob, struct bd_info *bd)
+ 	/* gpu: ip_state[1]: bit1~4 */
+ 	if (ip_state[1] & BAD_GPU) {
+ 		log_debug("fail gpu\n");
++		fdt_status_fail_by_pathf(blob, "/gpu-panthor@fb000000");
+ 		fdt_status_fail_by_pathf(blob, "/gpu@fb000000");
+ 	}
+ 
++	if (ip_state[1] & BAD_VDEC0) {
++		log_debug("fail vdec0\n");
++		fdt_status_fail_by_pathf(blob, "/rkvdec-core@fdc38000");
++		fdt_status_fail_by_pathf(blob, "/iommu@fdc38700");
++	}
++	if (ip_state[1] & BAD_VDEC1) {
++		log_debug("fail vdec1\n");
++		fdt_status_fail_by_pathf(blob, "/rkvdec-core@fdc48000");
++		fdt_status_fail_by_pathf(blob, "/iommu@fdc48700");
++	}
++	if (ip_state[1] & BAD_VDEC) {
++		fdt_status_fail_by_pathf(blob, "/rkvdec-ccu@fdc30000");
++	}
++	if (ip_state[2] & BAD_VENC0) {
++		log_debug("fail venc0\n");
++		fdt_status_fail_by_pathf(blob, "/rkvenc-core@fdbd0000");
++		fdt_status_fail_by_pathf(blob, "/iommu@fdbdf000");
++	}
++	if (ip_state[2] & BAD_VENC1) {
++		log_debug("fail venc1\n");
++		fdt_status_fail_by_pathf(blob, "/rkvenc-core@fdbe0000");
++		fdt_status_fail_by_pathf(blob, "/iommu@fdbef000");
++	}
++	if (ip_state[2] & BAD_VENC) {
++		fdt_status_fail_by_pathf(blob, "/rkvenc-ccu");
++	}
++
+ 	parent = fdt_path_offset(blob, "/cpus");
+ 	if (parent < 0) {
+ 		log_debug("Could not find /cpus, parent=%d\n", parent);
+-- 
+2.46.0
+
