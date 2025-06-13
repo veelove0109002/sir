@@ -1,14 +1,14 @@
-From 00f76e94d0b9472b5deb045dc417e191a4abbb7d Mon Sep 17 00:00:00 2001
+From ee1d15ac3fd79e05e96c3036c6578d65b1b14314 Mon Sep 17 00:00:00 2001
 From: Liangbin Lian <jjm2473@gmail.com>
 Date: Wed, 11 Jun 2025 16:55:37 +0800
 Subject: [PATCH] rockchip: rk3588: disable bad vpu in RK3582
 
 ---
- arch/arm/mach-rockchip/rk3588/rk3588.c | 38 ++++++++++++++++++++++++++
- 1 file changed, 38 insertions(+)
+ arch/arm/mach-rockchip/rk3588/rk3588.c | 44 +++++++++++++++++++++++++-
+ 1 file changed, 43 insertions(+), 1 deletion(-)
 
 diff --git a/arch/arm/mach-rockchip/rk3588/rk3588.c b/arch/arm/mach-rockchip/rk3588/rk3588.c
-index 1e660cc24d4..1db0101d6da 100644
+index 0571aab72df..1a8b7a96f5d 100644
 --- a/arch/arm/mach-rockchip/rk3588/rk3588.c
 +++ b/arch/arm/mach-rockchip/rk3588/rk3588.c
 @@ -193,6 +193,14 @@ int arch_cpu_init(void)
@@ -26,16 +26,18 @@ index 1e660cc24d4..1db0101d6da 100644
  int checkboard(void)
  {
  	u8 cpu_code[2], specification, package;
-@@ -306,6 +314,8 @@ int ft_system_setup(void *blob, struct bd_info *bd)
+@@ -305,7 +313,9 @@ int ft_system_setup(void *blob, struct bd_info *bd)
+ 
  	if (cpu_code[0] == 0x35 && cpu_code[1] == 0x82) {
  		/* policy: always disable gpu */
- 		ip_state[1] |= BAD_GPU;
+-		ip_state[1] |= BAD_GPU;
++		//ip_state[1] |= BAD_GPU;
 +		/* policy: always disable vdec */
-+		ip_state[1] |= BAD_VDEC;
++		//ip_state[1] |= BAD_VDEC;
  
+ #if 0
  		/* policy: always disable one big core cluster */
- 		if (!(ip_state[0] & (BAD_CPU_CLUSTER1 | BAD_CPU_CLUSTER2)))
-@@ -330,9 +340,37 @@ int ft_system_setup(void *blob, struct bd_info *bd)
+@@ -332,9 +342,41 @@ int ft_system_setup(void *blob, struct bd_info *bd)
  	/* gpu: ip_state[1]: bit1~4 */
  	if (ip_state[1] & BAD_GPU) {
  		log_debug("fail gpu\n");
@@ -55,6 +57,8 @@ index 1e660cc24d4..1db0101d6da 100644
 +	}
 +	if (ip_state[1] & BAD_VDEC) {
 +		fdt_status_fail_by_pathf(blob, "/rkvdec-ccu@fdc30000");
++		fdt_path_set_name(blob, "/rkvdec-core@fdc38000", "rkvdec@fdc38000");
++		fdt_path_set_name(blob, "/rkvdec-core@fdc48000", "rkvdec@fdc48000");
 +	}
 +	if (ip_state[2] & BAD_VENC0) {
 +		log_debug("fail venc0\n");
@@ -68,6 +72,8 @@ index 1e660cc24d4..1db0101d6da 100644
 +	}
 +	if (ip_state[2] & BAD_VENC) {
 +		fdt_status_fail_by_pathf(blob, "/rkvenc-ccu");
++		fdt_path_set_name(blob, "/rkvenc-core@fdbd0000", "rkvenc@fdbd0000");
++		fdt_path_set_name(blob, "/rkvenc-core@fdbe0000", "rkvenc@fdbe0000");
 +	}
 +
  	parent = fdt_path_offset(blob, "/cpus");
