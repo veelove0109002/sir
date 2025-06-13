@@ -483,6 +483,7 @@
 		cpu_port = <6>;
 		cpu-port = <6>;
 		realtek,extif1 = <1 0 1 1 1 1 1 1 2>;
+		realtek,extif = <6 1 0 1 1 1 1 1 1 2>;
 		mii-bus = <&mdio1>;
 		phy_id = <29>;
 		phy-id = <29>;
