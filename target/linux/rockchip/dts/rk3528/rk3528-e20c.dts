@@ -1,10 +1,12 @@
 /dts-v1/;
 
 #include <rockchip/rk3528-radxa-e20c.dts>
+#include "rk3528-patch.dtsi"
 
 / {
 	aliases {
 		ethernet0 = &gmac1;
+		ethernet1 = &rtl8111h;
 
 		mmc0 = &sdmmc;
 		mmc1 = &sdhci;
@@ -28,6 +30,27 @@
 
 		led-wan {
 
+		};
+	};
+};
+
+&combphy_pu {
+	rockchip,dis-u3otg0-port; /* disable USB3.0 */
+	status = "disabled";
+};
+
+&pcie2x1 {
+	reset-gpios = <&gpio1 RK_PA2 GPIO_ACTIVE_HIGH>;
+	status = "disabled";
+	pcie@0,0 {
+		reg = <0x000000 0 0 0 0>;
+		#address-cells = <3>;
+		#size-cells = <2>;
+
+		rtl8111h: pcie-eth@0,0 {
+			compatible = "pci10ec,8168";
+			reg = <0x000000 0 0 0 0>;
+			realtek,led-data = <0x0778>;
 		};
 	};
 };
