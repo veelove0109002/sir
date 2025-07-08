@@ -1,3 +1,18 @@
+# RK3328
+
+define Device/Legacy/rk3328
+$(call Device/Legacy,$(1))
+  SOC := rk3328
+endef
+
+define Device/friendlyarm_nanopi-r2s
+$(call Device/Legacy/rk3328,$(1))
+  DEVICE_VENDOR := FriendlyARM
+  DEVICE_MODEL := NanoPi R2S
+  DEVICE_PACKAGES += kmod-usb-net-rtl8152 ethtool
+endef
+
+
 # RK3528
 
 define Device/Legacy/rk3528
