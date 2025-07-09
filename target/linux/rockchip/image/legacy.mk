@@ -3,6 +3,7 @@
 define Device/Legacy/rk3328
 $(call Device/Legacy,$(1))
   SOC := rk3328
+  DEVICE_PACKAGES := kmod-iio-rockchip-saradc
 endef
 
 define Device/friendlyarm_nanopi-r2s
@@ -20,7 +21,7 @@ $(call Device/Legacy,$(1))
   SOC := rk3528
   UBOOT_DEVICE_NAME := easepi-rk3528
   BOOT_SCRIPT := rk3528
-  DEVICE_PACKAGES := kmod-rga3 kmod-rk_vcodec
+  DEVICE_PACKAGES := kmod-rga3 kmod-rk_vcodec kmod-iio-rockchip-saradc
 endef
 
 define Device/Legacy/rk3528_rtl8111h
@@ -43,7 +44,7 @@ $(call Device/Legacy,$(1))
   SOC := rk3568
   UBOOT_DEVICE_NAME := easepi-rk3568
   BOOT_SCRIPT := rk3568
-  DEVICE_PACKAGES := kmod-rga3 kmod-rk_vcodec kmod-rkgpu-bifrost kmod-rknpu
+  DEVICE_PACKAGES := kmod-rga3 kmod-rk_vcodec kmod-rkgpu-bifrost kmod-rknpu kmod-iio-rockchip-saradc
 endef
 
 define Device/Legacy/rk3566
@@ -143,7 +144,7 @@ $(call Device/Legacy,$(1))
   SOC := rk3588
   UBOOT_DEVICE_NAME := easepi-rk3588
   BOOT_SCRIPT := rk3588
-  DEVICE_PACKAGES := kmod-rga3 kmod-rk_vcodec kmod-rkgpu-bifrost-csf-coex kmod-rknpu
+  DEVICE_PACKAGES := kmod-rga3 kmod-rk_vcodec kmod-rkgpu-bifrost-csf-coex kmod-rknpu kmod-iio-rockchip-saradc
 endef
 
 define Device/Legacy/rk3588s
