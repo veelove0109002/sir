@@ -67,9 +67,6 @@ endef
 define U-Boot/nanopi-r2s-rk3328
   $(U-Boot/rk3328/Default)
   NAME:=NanoPi R2S
-  DEPENDS:=+PACKAGE_u-boot-$(1):trusted-firmware-a-rk3328-vendor
-  ATF:=rk322xh_bl31_v1.49.elf
-  TPL:=rk3328_ddr_333MHz_v1.19.bin
   BUILD_DEVICES:= \
     friendlyarm_nanopi-r2s
 endef
