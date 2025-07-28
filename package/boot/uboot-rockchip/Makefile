@@ -131,19 +131,16 @@ endef
 define U-Boot/nanopi-r4s-rk3399
   $(U-Boot/rk3399/Default)
   NAME:=NanoPi R4S
-  DEPENDS:=+PACKAGE_u-boot-$(1):trusted-firmware-a-rk3399-vendor
-  ATF:=rk3399_bl31_v1.36.elf
-  TPL:=rk3399_ddr_800MHz_v1.30.bin
   BUILD_DEVICES:= \
     friendlyarm_nanopi-r4s \
     friendlyarm_nanopi-r4s-enterprise
 endef
 
 define U-Boot/nanopi-r4se-rk3399
-  $(U-Boot/nanopi-r4s-rk3399)
+  $(U-Boot/rk3399/Default)
   NAME:=NanoPi R4SE
   BUILD_DEVICES:= \
-    friendlyarm_nanopi-r4se
+	friendlyarm_nanopi-r4se
 endef
 
 define U-Boot/rock-pi-4-rk3399
