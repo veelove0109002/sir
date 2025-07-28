@@ -38,6 +38,12 @@ define Trusted-Firmware-A/rk3308-rock-pi-s
   TPL:=rk33/rk3308_ddr_589MHz_uart0_m0_v2.07.bin
 endef
 
+define Trusted-Firmware-A/rk3328-vendor
+  BUILD_SUBTARGET:=armv8
+  ATF:=rk33/rk322xh_bl31_v1.49.elf
+  TPL:=rk33/rk3328_ddr_333MHz_v1.19.bin
+endef
+
 define Trusted-Firmware-A/rk3399-vendor
   BUILD_SUBTARGET:=armv8
   ATF:=rk33/rk3399_bl31_v1.36.elf
@@ -95,6 +101,7 @@ endef
 TFA_TARGETS:= \
 	rk3308 \
 	rk3308-rock-pi-s \
+	rk3328-vendor \
 	rk3399-vendor \
 	rk3528 \
 	rk3566 \
