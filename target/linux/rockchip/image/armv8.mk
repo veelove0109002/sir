@@ -79,7 +79,6 @@ TARGET_DEVICES += friendlyarm_nanopi-r3s
 define Device/friendlyarm_nanopi-r4s
   DEVICE_VENDOR := FriendlyARM
   DEVICE_MODEL := NanoPi R4S
-  DEVICE_VARIANT := 4GB LPDDR4
   SOC := rk3399
   DEVICE_PACKAGES := kmod-r8169
   DEVICE_DTS_DIR := ../dts
@@ -91,7 +90,6 @@ TARGET_DEVICES += friendlyarm_nanopi-r4s
 define Device/friendlyarm_nanopi-r4se
   DEVICE_VENDOR := FriendlyARM
   DEVICE_MODEL := NanoPi R4SE
-  DEVICE_VARIANT := 4GB LPDDR4
   SOC := rk3399
   DEVICE_PACKAGES := kmod-r8169
   DEVICE_DTS_DIR := ../dts
