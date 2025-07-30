@@ -103,6 +103,10 @@
 	};
 };
 
+&tsadc {
+	status = "okay";
+};
+
 &usb2phy {
 	status = "okay";
 };
