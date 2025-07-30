@@ -1,4 +1,5 @@
 #include <dt-bindings/phy/phy.h>
+#include <dt-bindings/thermal/thermal.h>
 
 / {
 	cpu_opp_table: opp-table-cpu {
@@ -197,8 +198,6 @@
 			rockchip,hw-tshut-temp = <120000>;
 			rockchip,hw-tshut-mode = <0>; /* tshut mode 0:CRU 1:GPIO */
 			rockchip,hw-tshut-polarity = <0>; /* tshut polarity 0:LOW 1:HIGH */
-			nvmem-cells = <&cpu_tsadc_trim_l>, <&cpu_tsadc_trim_h>;
-			nvmem-cell-names = "trim_l", "trim_h";
 			status = "disabled";
 		};
 
@@ -342,20 +341,62 @@
 		};
 
 	};
+
+	thermal-zones {
+		soc_thermal: soc-thermal {
+			polling-delay-passive = <20>;
+			polling-delay = <1000>;
+
+			thermal-sensors = <&tsadc 0>;
+
+			trips {
+				threshold: trip-point-0 {
+					temperature = <95000>;
+					hysteresis = <2000>;
+					type = "passive";
+				};
+				target: trip-point-1 {
+					temperature = <110000>;
+					hysteresis = <2000>;
+					type = "passive";
+				};
+				soc_crit: soc-crit {
+					temperature = <120000>;
+					hysteresis = <2000>;
+					type = "critical";
+				};
+			};
+
+			cooling-maps {
+				map0 {
+					trip = <&target>;
+					cooling-device = <&cpu0 THERMAL_NO_LIMIT THERMAL_NO_LIMIT>,
+							 <&cpu1 THERMAL_NO_LIMIT THERMAL_NO_LIMIT>,
+							 <&cpu2 THERMAL_NO_LIMIT THERMAL_NO_LIMIT>,
+							 <&cpu3 THERMAL_NO_LIMIT THERMAL_NO_LIMIT>;
+				};
+			};
+		};
+	};
+
 };
 
 &cpu0 {
 	operating-points-v2 = <&cpu_opp_table>;
+	#cooling-cells = <2>;
 };
 
 &cpu1 {
 	operating-points-v2 = <&cpu_opp_table>;
+	#cooling-cells = <2>;
 };
 
 &cpu2 {
 	operating-points-v2 = <&cpu_opp_table>;
+	#cooling-cells = <2>;
 };
 
 &cpu3 {
 	operating-points-v2 = <&cpu_opp_table>;
+	#cooling-cells = <2>;
 };
