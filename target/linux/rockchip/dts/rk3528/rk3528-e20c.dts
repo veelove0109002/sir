@@ -44,6 +44,12 @@
 
 		};
 	};
+
+	gpio-keys {
+		button-user {
+			linux,code = <KEY_RESTART>;
+		};
+	};
 };
 
 &combphy_pu {
@@ -62,7 +68,7 @@
 		rtl8111h: pcie-eth@0,0 {
 			compatible = "pci10ec,8168";
 			reg = <0x000000 0 0 0 0>;
-			realtek,led-data = <0x0778>;
+			realtek,led-data = <0xca>;
 		};
 	};
 };
