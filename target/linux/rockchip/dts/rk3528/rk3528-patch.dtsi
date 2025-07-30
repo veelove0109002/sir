@@ -164,8 +164,9 @@
 			clocks = <&cru CLK_REF_USBPHY>, <&cru PCLK_USBPHY>;
 			clock-names = "phyclk", "apb_pclk";
 			#clock-cells = <0>;
+			clock-output-names = "clk_usbphy_480m";
 			rockchip,usbgrf = <&vo_grf>;
-			rockchip,sysgrf = <&sys_grf>; // rk3528_usb2phy_tuning use different grf range
+			// rockchip,sysgrf = <&sys_grf>; // rk3528_usb2phy_tuning use different grf range
 			status = "disabled";
 
 			u2phy_otg: otg-port {
@@ -256,6 +257,28 @@
 			phy_type = "utmi_wide";
 			resets = <&cru SRST_A_USB3OTG>;
 			snps,dis_u2_susphy_quirk;
+			status = "disabled";
+		};
+
+		usb_host0_ehci: usb@ff100000 {
+			compatible = "generic-ehci";
+			reg = <0x0 0xff100000 0x0 0x40000>;
+			clocks = <&cru HCLK_USBHOST>, <&cru HCLK_USBHOST_ARB>,
+				 <&usb2phy>;
+			interrupts = <GIC_SPI 143 IRQ_TYPE_LEVEL_HIGH>;
+			phys = <&u2phy_host>;
+			phy-names = "usb";
+			status = "disabled";
+		};
+
+		usb_host0_ohci: usb@ff140000 {
+			compatible = "generic-ohci";
+			reg = <0x0 0xff140000 0x0 0x40000>;
+			clocks = <&cru HCLK_USBHOST>, <&cru HCLK_USBHOST_ARB>,
+				 <&usb2phy>;
+			interrupts = <GIC_SPI 144 IRQ_TYPE_LEVEL_HIGH>;
+			phys = <&u2phy_host>;
+			phy-names = "usb";
 			status = "disabled";
 		};
 
