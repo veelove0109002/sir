@@ -227,9 +227,10 @@
 	no-sd;
 	no-sdio;
 	non-removable;
-	mmc-hs400-1_8v;
-	mmc-hs400-enhanced-strobe;
+	mmc-hs200-1_8v;
 	max-frequency = <200000000>;
+	vmmc-supply = <&vcc_3v3_s3>;
+	vqmmc-supply = <&vdd_1v8_s3>;
 	status = "okay";
 };
 
