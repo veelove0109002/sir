@@ -2,6 +2,7 @@
 
 #include <rockchip/rk3528-radxa-e20c.dts>
 #include "rk3528-patch.dtsi"
+#include "rk3528-ip.dtsi"
 
 / {
 	aliases {
