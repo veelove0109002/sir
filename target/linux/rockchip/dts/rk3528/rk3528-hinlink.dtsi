@@ -314,3 +314,12 @@
 		};
 	};
 };
+
+// pwm2 hangs system, disable it
+&vdd_logic {
+	status = "disabled";
+};
+
+&pwm2 {
+	status = "disabled";
+};
