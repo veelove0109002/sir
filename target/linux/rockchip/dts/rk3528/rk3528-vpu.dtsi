@@ -42,8 +42,8 @@
 			rockchip,normal-rates = <340000000>, <0>, <600000000>;
 			assigned-clocks = <&cru ACLK_RKVDEC>, <&cru CLK_HEVC_CA_RKVDEC>;
 			assigned-clock-rates = <340000000>, <600000000>;
-			resets = <&cru SRST_ARESETN_RKVDEC>, <&cru SRST_HRESETN_RKVDEC>,
-				<&cru SRST_RESETN_HEVC_CA_RKVDEC>;
+			resets = <&cru SRST_A_RKVDEC>, <&cru SRST_H_RKVDEC>,
+				<&cru SRST_HEVC_CA_RKVDEC>;
 			reset-names = "video_a", "video_h", "video_hevc_cabac";
 			iommus = <&rkvdec_mmu>;
 			rockchip,srv = <&mpp_srv>;
@@ -77,8 +77,8 @@
 			clocks = <&cru ACLK_RKVENC>, <&cru HCLK_RKVENC>, <&cru CLK_CORE_RKVENC>;
 			clock-names = "aclk_vcodec", "hclk_vcodec", "clk_core";
 			rockchip,normal-rates = <300000000>, <0>, <300000000>;
-			resets = <&cru SRST_ARESETN_RKVENC>, <&cru SRST_HRESETN_RKVENC>,
-				<&cru SRST_RESETN_CORE_RKVENC>;
+			resets = <&cru SRST_A_RKVENC>, <&cru SRST_H_RKVENC>,
+				<&cru SRST_CORE_RKVENC>;
 			reset-names = "video_a", "video_h", "video_core";
 			assigned-clocks = <&cru ACLK_RKVENC>, <&cru CLK_CORE_RKVENC>;
 			assigned-clock-rates = <300000000>, <300000000>;
@@ -114,7 +114,7 @@
 			rockchip,normal-rates = <300000000>, <0>;
 			assigned-clocks = <&cru ACLK_VPU>;
 			assigned-clock-rates = <300000000>;
-			resets = <&cru SRST_ARESETN_VPU>, <&cru SRST_HRESETN_VPU>;
+			resets = <&cru SRST_A_VPU>, <&cru SRST_H_VPU>;
 			reset-names = "shared_video_a", "shared_video_h";
 			iommus = <&vdpu_mmu>;
 			rockchip,srv = <&mpp_srv>;
@@ -149,7 +149,7 @@
 			rockchip,normal-rates = <300000000>, <0>;
 			assigned-clocks = <&cru ACLK_VPU>;
 			assigned-clock-rates = <300000000>;
-			resets = <&cru SRST_ARESETN_VPU>, <&cru SRST_HRESETN_VPU>;
+			resets = <&cru SRST_A_VPU>, <&cru SRST_H_VPU>;
 			reset-names = "shared_video_a", "shared_video_h";
 			iommus = <&vdpu_mmu>;
 			rockchip,srv = <&mpp_srv>;
@@ -193,8 +193,8 @@
 			rockchip,normal-rates = <340000000>, <0>, <340000000>;
 			assigned-clocks = <&cru ACLK_VDPP>, <&cru CLK_CORE_VDPP>;
 			assigned-clock-rates = <340000000>, <340000000>;
-			resets = <&cru SRST_ARESETN_VDPP>, <&cru SRST_HRESETN_VDPP>,
-				<&cru SRST_RESETN_CORE_VDPP>;
+			resets = <&cru SRST_A_VDPP>, <&cru SRST_H_VDPP>,
+				<&cru SRST_CORE_VDPP>;
 			reset-names = "shared_rst_a", "shared_rst_h", "shared_rst_s";
 			rockchip,srv = <&mpp_srv>;
 			rockchip,taskqueue-node = <3>;
@@ -225,8 +225,8 @@
 			rockchip,normal-rates = <340000000>, <0>, <340000000>;
 			assigned-clocks = <&cru ACLK_VDPP>, <&cru CLK_CORE_VDPP>;
 			assigned-clock-rates = <340000000>, <340000000>;
-			resets = <&cru SRST_ARESETN_VDPP>, <&cru SRST_HRESETN_VDPP>,
-				<&cru SRST_RESETN_CORE_VDPP>;
+			resets = <&cru SRST_A_VDPP>, <&cru SRST_H_VDPP>,
+				<&cru SRST_CORE_VDPP>;
 			reset-names = "shared_rst_a", "shared_rst_h", "shared_rst_s";
 			rockchip,srv = <&mpp_srv>;
 			rockchip,grf = <&vo_grf>;
@@ -249,7 +249,7 @@
 			assigned-clocks = <&cru ACLK_JPEG_DECODER>;
 			assigned-clock-rates = <340000000>;
 			rockchip,disable-auto-freq;
-			resets = <&cru SRST_ARESETN_JPEG_DECODER>, <&cru SRST_HRESETN_JPEG_DECODER>;
+			resets = <&cru SRST_A_JPEG_DECODER>, <&cru SRST_H_JPEG_DECODER>;
 			reset-names = "video_a", "video_h";
 			iommus = <&jpegd_mmu>;
 			rockchip,srv = <&mpp_srv>;
