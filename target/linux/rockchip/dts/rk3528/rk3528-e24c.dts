@@ -119,7 +119,6 @@
 		compatible = "gpio-keys";
 		pinctrl-names = "default";
 		pinctrl-0 = <&user_key>;
-		autorepeat;
 
 		user-key {
 			label = "user";
