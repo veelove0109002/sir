@@ -14,6 +14,8 @@
 #include <rockchip/rk3576.dtsi>
 #include "rk3576-patch.dtsi"
 #include "rk3576-rk806.dtsi"
+#include "rk3576-ip.dtsi"
+#include "rk3576-ip-rk806.dtsi"
 
 / {
 	model = "FriendlyElec boards based on Rockchip RK3576";

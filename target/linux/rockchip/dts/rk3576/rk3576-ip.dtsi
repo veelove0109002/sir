@@ -1,0 +1,56 @@
+
+#include "rk3576-vpu.dtsi"
+#include "rk3576-npu.dtsi"
+
+&rknpu {
+	/delete-property/ power-domains;
+	/delete-property/ power-domain-names;
+};
+&jpegd {
+	/delete-property/ power-domains;
+};
+&jpege {
+	/delete-property/ power-domains;
+};
+&jpeg_mmu {
+	/delete-property/ power-domains;
+};
+&rga2_core0 {
+	/delete-property/ power-domains;
+};
+&rga2_core0_mmu {
+	/delete-property/ power-domains;
+};
+&rga2_core1 {
+	/delete-property/ power-domains;
+};
+&rga2_core1_mmu {
+	/delete-property/ power-domains;
+};
+&iep {
+	/delete-property/ power-domains;
+};
+&iep_mmu {
+	/delete-property/ power-domains;
+};
+&vdpp {
+	/delete-property/ power-domains;
+};
+&rkvenc0 {
+	/delete-property/ power-domains;
+};
+&rkvenc0_mmu {
+	/delete-property/ power-domains;
+};
+&rkvenc1 {
+	/delete-property/ power-domains;
+};
+&rkvenc1_mmu {
+	/delete-property/ power-domains;
+};
+&rkvdec {
+	/delete-property/ power-domains;
+};
+&rkvdec_mmu {
+	/delete-property/ power-domains;
+};

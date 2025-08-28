@@ -207,3 +207,15 @@
 &cpu_b3 {
 	#cooling-cells = <2>;
 };
+
+&crypto {
+	status = "okay";
+};
+
+&rng {
+	status = "okay";
+};
+
+&tsadc {
+	status = "okay";
+};
