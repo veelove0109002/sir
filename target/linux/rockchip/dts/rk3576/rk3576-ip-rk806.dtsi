@@ -1,6 +1,10 @@
 &gpu {
 	mali-supply = <&vdd_gpu_s0>;
+#ifdef DT_RK3576_NO_POWER_DOMAINS
 	status = "disabled";
+#else
+	status = "okay";
+#endif
 };
 
 &rknpu {

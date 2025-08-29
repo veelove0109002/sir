@@ -5,6 +5,8 @@
  * Source: ../../files/arch/arm64/boot/dts/rockchip/rk3576.dtsi
  */
 
+#define DT_RK3576_NO_POWER_DOMAINS
+
 &power {
 	status = "disabled";
 };

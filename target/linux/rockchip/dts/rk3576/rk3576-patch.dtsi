@@ -1,5 +1,6 @@
 #include <dt-bindings/thermal/thermal.h>
-#include "rk3576-no-power-domain.dtsi"
+//#include "rk3576-no-power-domain.dtsi"
+#include "rk3576-nvm-power-domain.dtsi"
 
 / {
 	thermal_zones: thermal-zones {

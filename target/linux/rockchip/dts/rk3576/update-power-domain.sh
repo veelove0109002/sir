@@ -78,6 +78,8 @@ cat > "$OUTPUT_FILE" << EOF
  * Source: $INPUT_FILE
  */
 
+#define DT_RK3576_NO_POWER_DOMAINS
+
 &power {
 	status = "disabled";
 };
