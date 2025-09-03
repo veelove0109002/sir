@@ -48,6 +48,7 @@ define U-Boot/easepi-rk3576
   ATF:=rk3576_bl31_v1.15.elf
   TPL:=rk3576_ddr_lp4_2112MHz_lp5_2736MHz_v1.09.bin
   SOC:=rk3576
+  IDB:=$$(IDB_FILE)
 endef
 
 
@@ -58,7 +59,23 @@ UBOOT_CONFIGURE_VARS += USE_PRIVATE_LIBGCC=yes
 UBOOT_MAKE_FLAGS += \
   IDB_SOC=$(SOC) \
   TPL_BIN=$(STAGING_DIR_IMAGE)/$(TPL) \
-  u-boot.itb idbloader.img
+  u-boot.itb $(if $(IDB),,idbloader.img)
+
+ifeq ($(BUILD_VARIANT),easepi-rk3576)
+# The idbloader.img built from uboot cannot boot from sd card, so use the pre-built one
+  IDB_FILE:=easepi-rk3576-idbloader_v1.09.107.img
+  define Download/rk3576-idbloader
+    FILE:=$(IDB_FILE)
+    URL:=https://github.com/jjm2473/uboot-nanopi/releases/download/rk3576-v1.0/
+    HASH:=c55404e27f595942be438a52e1e6b58eb9c577b25615c7d9b68202d4af390971
+  endef
+
+  define Build/Prepare
+	$(eval $(call Download,rk3576-idbloader))
+	$(call Build/Prepare/Default)
+
+  endef
+endif
 
 define Build/Configure
 	$(call Build/Configure/U-Boot)
@@ -67,6 +84,9 @@ define Build/Configure
 	$(SED) 's#CONFIG_MKIMAGE_DTC_PATH=.*#CONFIG_MKIMAGE_DTC_PATH="$(PKG_BUILD_DIR)/scripts/dtc/dtc"#g' $(PKG_BUILD_DIR)/.config
 	echo 'CONFIG_IDENT_STRING=" OpenWrt"' >> $(PKG_BUILD_DIR)/.config
 	$(CP) $(STAGING_DIR_IMAGE)/$(ATF) $(PKG_BUILD_DIR)/bl31.elf
+ifneq ($(IDB),)
+	$(CP) $(DL_DIR)/$(IDB) $(PKG_BUILD_DIR)/idbloader.img
+endif
 endef
 
 define Build/InstallDev
