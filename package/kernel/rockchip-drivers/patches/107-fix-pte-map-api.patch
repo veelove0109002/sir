@@ -13,11 +13,9 @@ ERROR: modpost: "__pte_offset_map_lock" [/openwrt/build_dir/target-aarch64_gener
  drivers/video/rockchip/rga3/rga_mm.c        | 10 ++++++++++
  3 files changed, 30 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/video/rockchip/rga/rga_mmu_info.c b/drivers/video/rockchip/rga/rga_mmu_info.c
-index 60e9e75..1373e30 100644
 --- a/drivers/video/rockchip/rga/rga_mmu_info.c
 +++ b/drivers/video/rockchip/rga/rga_mmu_info.c
-@@ -428,6 +428,14 @@ static int rga_MapUserMemory(struct page **pages,
+@@ -428,6 +428,14 @@ static int rga_MapUserMemory(struct page
                          pte_t       * pte;
                          spinlock_t  * ptl;
                          unsigned long pfn;
@@ -32,7 +30,7 @@ index 60e9e75..1373e30 100644
                          pgd_t * pgd;
  #if LINUX_VERSION_CODE >= KERNEL_VERSION(5, 10, 0)
  						p4d_t * p4d;
-@@ -477,7 +485,7 @@ static int rga_MapUserMemory(struct page **pages,
+@@ -477,7 +485,7 @@ static int rga_MapUserMemory(struct page
                          {
                              break;
                          }
@@ -41,11 +39,9 @@ index 60e9e75..1373e30 100644
                          pfn = pte_pfn(*pte);
                          Address = ((pfn << PAGE_SHIFT) | (((unsigned long)((Memory + i) << PAGE_SHIFT)) & ~PAGE_MASK));
                          pte_unmap_unlock(pte, ptl);
-diff --git a/drivers/video/rockchip/rga2/rga2_mmu_info.c b/drivers/video/rockchip/rga2/rga2_mmu_info.c
-index 324d52b..18081f0 100644
 --- a/drivers/video/rockchip/rga2/rga2_mmu_info.c
 +++ b/drivers/video/rockchip/rga2/rga2_mmu_info.c
-@@ -909,12 +909,14 @@ static int rga2_MapUserMemory(struct page **pages, uint32_t *pageTable,
+@@ -909,12 +909,14 @@ static int rga2_MapUserMemory(struct pag
  	struct page __maybe_unused *page;
  	spinlock_t * ptl;
  	pte_t * pte;
@@ -60,7 +56,7 @@ index 324d52b..18081f0 100644
  
  	status = 0;
  	Address = 0;
-@@ -972,6 +974,14 @@ static int rga2_MapUserMemory(struct page **pages, uint32_t *pageTable,
+@@ -972,6 +974,14 @@ static int rga2_MapUserMemory(struct pag
  			status = RGA2_OUT_OF_RESOURCES;
  			break;
  		}
@@ -75,7 +71,7 @@ index 324d52b..18081f0 100644
  		pgd = pgd_offset(current->mm, (Memory + i) << PAGE_SHIFT);
  		if (pgd_none(*pgd) || unlikely(pgd_bad(*pgd))) {
  			pr_err("RGA2 failed to get pgd, result = %d, pageCount = %d\n",
-@@ -1016,6 +1026,7 @@ static int rga2_MapUserMemory(struct page **pages, uint32_t *pageTable,
+@@ -1016,6 +1026,7 @@ static int rga2_MapUserMemory(struct pag
  			status = RGA2_OUT_OF_RESOURCES;
  			break;
  		}
@@ -83,11 +79,9 @@ index 324d52b..18081f0 100644
  		pfn = pte_pfn(*pte);
  		Address = ((pfn << PAGE_SHIFT) |
  			  (((unsigned long)((Memory + i) << PAGE_SHIFT)) & ~PAGE_MASK));
-diff --git a/drivers/video/rockchip/rga3/rga_mm.c b/drivers/video/rockchip/rga3/rga_mm.c
-index e249a0a..47fd2a2 100644
 --- a/drivers/video/rockchip/rga3/rga_mm.c
 +++ b/drivers/video/rockchip/rga3/rga_mm.c
-@@ -42,12 +42,14 @@ static int rga_get_user_pages_from_vma(struct page **pages, unsigned long Memory
+@@ -42,12 +42,14 @@ static int rga_get_user_pages_from_vma(s
  	struct vm_area_struct *vma;
  	spinlock_t *ptl;
  	pte_t *pte;
@@ -102,7 +96,7 @@ index e249a0a..47fd2a2 100644
  	unsigned long pfn;
  
  	for (i = 0; i < pageCount; i++) {
-@@ -58,6 +60,13 @@ static int rga_get_user_pages_from_vma(struct page **pages, unsigned long Memory
+@@ -58,6 +60,13 @@ static int rga_get_user_pages_from_vma(s
  			break;
  		}
  
@@ -116,7 +110,7 @@ index e249a0a..47fd2a2 100644
  		pgd = pgd_offset(current_mm, (Memory + i) << PAGE_SHIFT);
  		if (pgd_none(*pgd) || unlikely(pgd_bad(*pgd))) {
  			pr_err("page[%d] failed to get pgd\n", i);
-@@ -100,6 +109,7 @@ static int rga_get_user_pages_from_vma(struct page **pages, unsigned long Memory
+@@ -100,6 +109,7 @@ static int rga_get_user_pages_from_vma(s
  			ret = RGA_OUT_OF_RESOURCES;
  			break;
  		}
@@ -124,6 +118,3 @@ index e249a0a..47fd2a2 100644
  
  		pfn = pte_pfn(*pte);
  		pages[i] = pfn_to_page(pfn);
--- 
-2.46.0
-

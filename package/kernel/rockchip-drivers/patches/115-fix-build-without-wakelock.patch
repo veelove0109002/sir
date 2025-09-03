@@ -17,8 +17,6 @@ Subject: [PATCH] all: fix build without wakelocks support
  drivers/video/rockchip/vehicle/vehicle_main.c | 10 ++++++++++
  11 files changed, 71 insertions(+)
 
-diff --git a/drivers/video/rockchip/iep/iep_drv.c b/drivers/video/rockchip/iep/iep_drv.c
-index a7199c6..6401d9c 100644
 --- a/drivers/video/rockchip/iep/iep_drv.c
 +++ b/drivers/video/rockchip/iep/iep_drv.c
 @@ -24,7 +24,9 @@
@@ -61,7 +59,7 @@ index a7199c6..6401d9c 100644
  	iep_service.enable = false;
  }
  
-@@ -954,7 +962,9 @@ static int iep_drv_probe(struct platform_device *pdev)
+@@ -954,7 +962,9 @@ static int iep_drv_probe(struct platform
  
  	iep_service.enable = false;
  	INIT_DELAYED_WORK(&data->power_off_work, iep_power_off_work);
@@ -81,7 +79,7 @@ index a7199c6..6401d9c 100644
  #ifdef IEP_CLK_ENABLE
  err_clock:
  #endif
-@@ -1078,7 +1090,9 @@ static int iep_drv_remove(struct platform_device *pdev)
+@@ -1078,7 +1090,9 @@ static int iep_drv_remove(struct platfor
  	iep_iommu_info_destroy(iep_service.iommu_info);
  	iep_service.iommu_info = NULL;
  
@@ -91,8 +89,6 @@ index a7199c6..6401d9c 100644
  
  	misc_deregister(&(data->miscdev));
  	free_irq(data->irq0, &data->miscdev);
-diff --git a/drivers/video/rockchip/rga/RGA_API.h b/drivers/video/rockchip/rga/RGA_API.h
-index 96ca524..fe9c735 100644
 --- a/drivers/video/rockchip/rga/RGA_API.h
 +++ b/drivers/video/rockchip/rga/RGA_API.h
 @@ -3,7 +3,9 @@
@@ -115,8 +111,6 @@ index 96ca524..fe9c735 100644
  
  	struct clk *pd_rga;
  	struct clk *aclk_rga;
-diff --git a/drivers/video/rockchip/rga/rga_drv.c b/drivers/video/rockchip/rga/rga_drv.c
-index 57f4c63..865e013 100644
 --- a/drivers/video/rockchip/rga/rga_drv.c
 +++ b/drivers/video/rockchip/rga/rga_drv.c
 @@ -41,7 +41,9 @@
@@ -150,7 +144,7 @@ index 57f4c63..865e013 100644
  	rga_service.enable = false;
  }
  
-@@ -1839,7 +1846,9 @@ static int rga_drv_probe(struct platform_device *pdev)
+@@ -1839,7 +1846,9 @@ static int rga_drv_probe(struct platform
  	}
  
  	INIT_DELAYED_WORK(&data->power_off_work, rga_power_off_work);
@@ -170,7 +164,7 @@ index 57f4c63..865e013 100644
  	//kfree(data);
  
  	return ret;
-@@ -1922,7 +1933,9 @@ static int rga_drv_remove(struct platform_device *pdev)
+@@ -1922,7 +1933,9 @@ static int rga_drv_remove(struct platfor
  	struct rga_drvdata *data = platform_get_drvdata(pdev);
  	DBG("%s [%d]\n",__FUNCTION__,__LINE__);
  
@@ -180,8 +174,6 @@ index 57f4c63..865e013 100644
  	misc_deregister(&(data->miscdev));
  	free_irq(data->irq, &data->miscdev);
  	iounmap((void __iomem *)(data->rga_base));
-diff --git a/drivers/video/rockchip/rga/rga_reg_info.c b/drivers/video/rockchip/rga/rga_reg_info.c
-index 563eaab..d1b1257 100644
 --- a/drivers/video/rockchip/rga/rga_reg_info.c
 +++ b/drivers/video/rockchip/rga/rga_reg_info.c
 @@ -30,7 +30,9 @@
@@ -194,8 +186,6 @@ index 563eaab..d1b1257 100644
  #include <linux/version.h>
  
  #include "rga_reg_info.h"
-diff --git a/drivers/video/rockchip/rga2/RGA2_API.h b/drivers/video/rockchip/rga2/RGA2_API.h
-index 1fa38ed..f610cfe 100644
 --- a/drivers/video/rockchip/rga2/RGA2_API.h
 +++ b/drivers/video/rockchip/rga2/RGA2_API.h
 @@ -3,7 +3,9 @@
@@ -218,8 +208,6 @@ index 1fa38ed..f610cfe 100644
  	void (*rga_irq_callback)(int rga_retval);
  
  	struct clk *aclk_rga2;
-diff --git a/drivers/video/rockchip/rga2/rga2_drv.c b/drivers/video/rockchip/rga2/rga2_drv.c
-index f1cd655..d88bc32 100644
 --- a/drivers/video/rockchip/rga2/rga2_drv.c
 +++ b/drivers/video/rockchip/rga2/rga2_drv.c
 @@ -39,7 +39,9 @@
@@ -252,7 +240,7 @@ index f1cd655..d88bc32 100644
      first_RGA2_proc = 0;
  	rga2_service.enable = false;
  }
-@@ -1787,7 +1793,9 @@ static int rga2_drv_probe(struct platform_device *pdev)
+@@ -1787,7 +1793,9 @@ static int rga2_drv_probe(struct platfor
  	}
  
  	INIT_DELAYED_WORK(&data->power_off_work, rga2_power_off_work);
@@ -272,7 +260,7 @@ index f1cd655..d88bc32 100644
  	//kfree(data);
  
  	return ret;
-@@ -1879,7 +1889,9 @@ static int rga2_drv_remove(struct platform_device *pdev)
+@@ -1879,7 +1889,9 @@ static int rga2_drv_remove(struct platfo
  	rga2_debugger_remove(&data->debugger);
  #endif
  
@@ -282,8 +270,6 @@ index f1cd655..d88bc32 100644
  	misc_deregister(&(data->miscdev));
  #if (LINUX_VERSION_CODE >= KERNEL_VERSION(4, 4, 0))
  	free_irq(data->irq, &data->miscdev);
-diff --git a/drivers/video/rockchip/rga2/rga2_reg_info.c b/drivers/video/rockchip/rga2/rga2_reg_info.c
-index a6c1549..dca8f3a 100644
 --- a/drivers/video/rockchip/rga2/rga2_reg_info.c
 +++ b/drivers/video/rockchip/rga2/rga2_reg_info.c
 @@ -28,7 +28,9 @@
@@ -296,8 +282,6 @@ index a6c1549..dca8f3a 100644
  #include <linux/version.h>
  
  #include "rga2_reg_info.h"
-diff --git a/drivers/video/rockchip/rve/include/rve_drv.h b/drivers/video/rockchip/rve/include/rve_drv.h
-index 8ed9549..ac4c0ea 100644
 --- a/drivers/video/rockchip/rve/include/rve_drv.h
 +++ b/drivers/video/rockchip/rve/include/rve_drv.h
 @@ -46,7 +46,9 @@
@@ -320,8 +304,6 @@ index 8ed9549..ac4c0ea 100644
  
  	struct rve_mm *mm;
  
-diff --git a/drivers/video/rockchip/rve/rve_drv.c b/drivers/video/rockchip/rve/rve_drv.c
-index b4b4604..5010826 100644
 --- a/drivers/video/rockchip/rve/rve_drv.c
 +++ b/drivers/video/rockchip/rve/rve_drv.c
 @@ -817,7 +817,9 @@ static int __init rve_init(void)
@@ -344,8 +326,6 @@ index b4b4604..5010826 100644
  
  #ifdef CONFIG_SYNC_FILE
  	rve_fence_context_free(rve_drvdata->fence_ctx);
-diff --git a/drivers/video/rockchip/vehicle/vehicle_gpio.c b/drivers/video/rockchip/vehicle/vehicle_gpio.c
-index baab6aa..1a8ba65 100644
 --- a/drivers/video/rockchip/vehicle/vehicle_gpio.c
 +++ b/drivers/video/rockchip/vehicle/vehicle_gpio.c
 @@ -19,7 +19,9 @@
@@ -358,8 +338,6 @@ index baab6aa..1a8ba65 100644
  #include <linux/of_gpio.h>
  #include <linux/of_irq.h>
  #include <linux/interrupt.h>
-diff --git a/drivers/video/rockchip/vehicle/vehicle_main.c b/drivers/video/rockchip/vehicle/vehicle_main.c
-index a3ffdd1..ae7ed6e 100644
 --- a/drivers/video/rockchip/vehicle/vehicle_main.c
 +++ b/drivers/video/rockchip/vehicle/vehicle_main.c
 @@ -24,7 +24,9 @@
@@ -382,7 +360,7 @@ index a3ffdd1..ae7ed6e 100644
  	struct gpio_detect gpio_data;
  	struct vehicle_cif cif;
  	struct vehicle_ad_dev ad;
-@@ -339,7 +343,9 @@ static int vehicle_probe(struct platform_device *pdev)
+@@ -339,7 +343,9 @@ static int vehicle_probe(struct platform
  		return -EINVAL;
  	}
  
@@ -392,7 +370,7 @@ index a3ffdd1..ae7ed6e 100644
  
  	dev_info(vehicle_info->dev, "vehicle driver probe success\n");
  
-@@ -399,7 +405,11 @@ static void vehicle_exit_complete_notify(struct vehicle *v)
+@@ -399,7 +405,11 @@ static void vehicle_exit_complete_notify
  	status = kasprintf(GFP_KERNEL, "vehicle_exit=done");
  	envp[0] = status;
  	envp[1] = NULL;
@@ -404,6 +382,3 @@ index a3ffdd1..ae7ed6e 100644
  	kobject_uevent_env(&v->dev->kobj, KOBJ_CHANGE, envp);
  
  	kfree(status);
--- 
-2.46.0
-

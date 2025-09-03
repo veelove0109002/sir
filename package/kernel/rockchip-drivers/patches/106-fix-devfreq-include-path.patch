@@ -7,8 +7,6 @@ Subject: [PATCH] Fix mpp_rkvenc.c include path on OOT build
  drivers/video/rockchip/mpp/mpp_rkvenc.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/video/rockchip/mpp/mpp_rkvenc.c b/drivers/video/rockchip/mpp/mpp_rkvenc.c
-index a8b8895..9cbf100 100644
 --- a/drivers/video/rockchip/mpp/mpp_rkvenc.c
 +++ b/drivers/video/rockchip/mpp/mpp_rkvenc.c
 @@ -35,7 +35,7 @@
@@ -20,6 +18,3 @@ index a8b8895..9cbf100 100644
  #endif
  
  #include "mpp_debug.h"
--- 
-2.46.0
-

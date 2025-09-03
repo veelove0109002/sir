@@ -8,11 +8,9 @@ Subject: [PATCH] rknpu: fix linux 6.6 API changes
  drivers/rknpu/rknpu_iommu.c | 4 ++++
  2 files changed, 6 insertions(+)
 
-diff --git a/drivers/rknpu/rknpu_drv.c b/drivers/rknpu/rknpu_drv.c
-index 58c6798..7b4faeb 100644
 --- a/drivers/rknpu/rknpu_drv.c
 +++ b/drivers/rknpu/rknpu_drv.c
-@@ -723,10 +723,12 @@ static struct drm_driver rknpu_drm_driver = {
+@@ -726,11 +726,13 @@ static struct drm_driver rknpu_drm_drive
  	.gem_prime_import = drm_gem_prime_import,
  #endif
  	.gem_prime_import_sg_table = rknpu_gem_prime_import_sg_table,
@@ -21,15 +19,14 @@ index 58c6798..7b4faeb 100644
  	.gem_prime_mmap = drm_gem_prime_mmap,
  #else
  	.gem_prime_mmap = rknpu_gem_prime_mmap,
-+#endif
  #endif
++#endif
  	.ioctls = rknpu_ioctls,
  	.num_ioctls = ARRAY_SIZE(rknpu_ioctls),
-diff --git a/drivers/rknpu/rknpu_iommu.c b/drivers/rknpu/rknpu_iommu.c
-index 5683e2c..46b7827 100644
+ 	.fops = &rknpu_drm_driver_fops,
 --- a/drivers/rknpu/rknpu_iommu.c
 +++ b/drivers/rknpu/rknpu_iommu.c
-@@ -93,6 +93,10 @@ static int rknpu_dma_info_to_prot(enum dma_data_direction dir, bool coherent)
+@@ -97,6 +97,10 @@ static int rknpu_dma_info_to_prot(enum d
  	}
  }
  
@@ -40,6 +37,3 @@ index 5683e2c..46b7827 100644
  /*
   * Prepare a successfully-mapped scatterlist to give back to the caller.
   *
--- 
-2.46.0
-

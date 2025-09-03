@@ -9,8 +9,6 @@ Subject: [PATCH] Fix build without DMABUF_CACHE
  drivers/video/rockchip/rve/include/rve_drv.h | 4 ++++
  3 files changed, 12 insertions(+)
 
-diff --git a/drivers/video/rockchip/mpp/mpp_iommu.c b/drivers/video/rockchip/mpp/mpp_iommu.c
-index 9a35893..719de83 100644
 --- a/drivers/video/rockchip/mpp/mpp_iommu.c
 +++ b/drivers/video/rockchip/mpp/mpp_iommu.c
 @@ -9,7 +9,11 @@
@@ -25,8 +23,6 @@ index 9a35893..719de83 100644
  #include <linux/dma-mapping.h>
  #include <linux/iommu.h>
  #include <linux/of.h>
-diff --git a/drivers/video/rockchip/rga2/rga2_drv.c b/drivers/video/rockchip/rga2/rga2_drv.c
-index ca5218f..f1cd655 100644
 --- a/drivers/video/rockchip/rga2/rga2_drv.c
 +++ b/drivers/video/rockchip/rga2/rga2_drv.c
 @@ -45,7 +45,11 @@
@@ -41,8 +37,6 @@ index ca5218f..f1cd655 100644
  #endif
  
  #include "rga2.h"
-diff --git a/drivers/video/rockchip/rve/include/rve_drv.h b/drivers/video/rockchip/rve/include/rve_drv.h
-index 9220b97..8ed9549 100644
 --- a/drivers/video/rockchip/rve/include/rve_drv.h
 +++ b/drivers/video/rockchip/rve/include/rve_drv.h
 @@ -13,7 +13,11 @@
@@ -57,6 +51,3 @@ index 9220b97..8ed9549 100644
  #include <linux/dma-mapping.h>
  #include <linux/err.h>
  #include <linux/fb.h>
--- 
-2.46.0
-

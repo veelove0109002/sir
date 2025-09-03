@@ -8,11 +8,9 @@ unused in anywhere
  drivers/rknpu/rknpu_gem.c | 1 -
  1 file changed, 1 deletion(-)
 
-diff --git a/drivers/rknpu/rknpu_gem.c b/drivers/rknpu/rknpu_gem.c
-index a6e0613..8cd4ffc 100644
 --- a/drivers/rknpu/rknpu_gem.c
 +++ b/drivers/rknpu/rknpu_gem.c
-@@ -15,7 +15,6 @@
+@@ -16,7 +16,6 @@
  #include <linux/iommu.h>
  #include <linux/pfn_t.h>
  #include <linux/version.h>
@@ -20,6 +18,3 @@ index a6e0613..8cd4ffc 100644
  #include <asm/cacheflush.h>
  
  #if KERNEL_VERSION(5, 10, 0) <= LINUX_VERSION_CODE
--- 
-2.46.0
-

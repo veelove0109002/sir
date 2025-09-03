@@ -9,11 +9,9 @@ Subject: [PATCH] mpp: ignore devfreq init failed
  drivers/video/rockchip/mpp/mpp_rkvenc.c  | 10 ++++++++--
  3 files changed, 22 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/video/rockchip/mpp/mpp_rkvdec.c b/drivers/video/rockchip/mpp/mpp_rkvdec.c
-index 05d235a..23b142b 100644
 --- a/drivers/video/rockchip/mpp/mpp_rkvdec.c
 +++ b/drivers/video/rockchip/mpp/mpp_rkvdec.c
-@@ -1322,6 +1322,13 @@ static int rkvdec_3328_init(struct mpp_dev *mpp)
+@@ -1322,6 +1322,13 @@ static int rkvdec_3328_init(struct mpp_d
  	mpp->fault_handler = rkvdec_3328_iommu_hdl;
  
  	ret = rkvdec_devfreq_init(mpp);
@@ -27,11 +25,9 @@ index 05d235a..23b142b 100644
  done:
  	return ret;
  }
-diff --git a/drivers/video/rockchip/mpp/mpp_rkvdec2.c b/drivers/video/rockchip/mpp/mpp_rkvdec2.c
-index 6a44d26..ba432b4 100644
 --- a/drivers/video/rockchip/mpp/mpp_rkvdec2.c
 +++ b/drivers/video/rockchip/mpp/mpp_rkvdec2.c
-@@ -1211,8 +1211,13 @@ static int rkvdec2_init(struct mpp_dev *mpp)
+@@ -1211,8 +1211,13 @@ static int rkvdec2_init(struct mpp_dev *
  		mpp_err("No hevc cabac reset resource define\n");
  
  	ret = rkvdec2_devfreq_init(mpp);
@@ -47,11 +43,9 @@ index 6a44d26..ba432b4 100644
  
  	return ret;
  }
-diff --git a/drivers/video/rockchip/mpp/mpp_rkvenc.c b/drivers/video/rockchip/mpp/mpp_rkvenc.c
-index 9cbf100..2f76d4e 100644
 --- a/drivers/video/rockchip/mpp/mpp_rkvenc.c
 +++ b/drivers/video/rockchip/mpp/mpp_rkvenc.c
-@@ -1174,8 +1174,14 @@ static int rkvenc_init(struct mpp_dev *mpp)
+@@ -1174,8 +1174,14 @@ static int rkvenc_init(struct mpp_dev *m
  
  #ifdef CONFIG_PM_DEVFREQ
  	ret = rkvenc_devfreq_init(mpp);
@@ -68,6 +62,3 @@ index 9cbf100..2f76d4e 100644
  #endif
  
  	/* for mmu pagefault */
--- 
-2.46.0
-

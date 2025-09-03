@@ -17,8 +17,6 @@ ERROR: modpost: module rga2 uses symbol dma_buf_detach from namespace DMA_BUF, b
  drivers/video/rockchip/rga2/rga2_drv.c | 3 +++
  1 file changed, 3 insertions(+)
 
-diff --git a/drivers/video/rockchip/rga2/rga2_drv.c b/drivers/video/rockchip/rga2/rga2_drv.c
-index d88bc32..6547932 100644
 --- a/drivers/video/rockchip/rga2/rga2_drv.c
 +++ b/drivers/video/rockchip/rga2/rga2_drv.c
 @@ -2287,3 +2287,6 @@ module_exit(rga2_exit);
@@ -29,6 +27,3 @@ index d88bc32..6547932 100644
 +MODULE_IMPORT_NS(DMA_BUF);
 +#endif
 \ No newline at end of file
--- 
-2.46.0
-
