@@ -1,3 +1,5 @@
+#define SCMI_CLK_NPU			238
+
 / {
 	soc {
 
@@ -8,7 +10,7 @@
 			interrupts = <GIC_SPI 247 IRQ_TYPE_LEVEL_HIGH>,
 					<GIC_SPI 248 IRQ_TYPE_LEVEL_HIGH>;
 			interrupt-names = "npu0_irq", "npu1_irq";
-			clocks = <&scmi_clk CLK_RKNN_DSU0>, <&cru ACLK_RKNN0>, <&cru ACLK_RKNN1>, <&cru HCLK_RKNN_ROOT>,
+			clocks = <&scmi_clk SCMI_CLK_NPU>, <&cru ACLK_RKNN0>, <&cru ACLK_RKNN1>, <&cru HCLK_RKNN_ROOT>,
 				<&cru ACLK_RKNN_CBUF>, <&cru HCLK_RKNN_CBUF>;
 			clock-names = "clk_npu", "aclk0", "aclk1", "hclk_root",
 					"aclk_cbuf", "hclk_cbuf";
