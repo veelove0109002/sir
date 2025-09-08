@@ -209,7 +209,7 @@
 	wireless_wlan: wireless-wlan {
 		status = "okay";
 		compatible = "wlan-platdata";
-		wifi_chip_type = "ap6256s";
+		wifi_chip_type = "ap6255";
 		pinctrl-names = "default";
 		pinctrl-0 = <&wifi_host_wake_irq>;
 		WIFI,host_wake_irq = <&gpio0 RK_PB0 GPIO_ACTIVE_HIGH>;
@@ -417,12 +417,8 @@
 	hym8563: rtc@51 {
 		compatible = "haoyu,hym8563";
 		reg = <0x51>;
-		interrupt-parent = <&gpio0>;
-		interrupts = <RK_PB0 IRQ_TYPE_LEVEL_LOW>;
 		#clock-cells = <0>;
 		clock-output-names = "hym8563";
-		pinctrl-names = "default";
-		pinctrl-0 = <&hym8563_int>;
 		wakeup-source;
 	};
 };
@@ -517,11 +513,6 @@
 		};
 		rtl8211f1_rst: rtl8211f1-rst {
 			rockchip,pins = <3 RK_PB2 RK_FUNC_GPIO &pcfg_pull_none>;
-		};
-	};
-	hym8563 {
-		hym8563_int: hym8563-int {
-			rockchip,pins = <0 RK_PB0 RK_FUNC_GPIO &pcfg_pull_none>;
 		};
 	};
 	leds {
