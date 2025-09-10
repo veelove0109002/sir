@@ -3,7 +3,7 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=mali-drivers
 PKG_VERSION:=24.11.1
-PKG_RELEASE:=2
+PKG_RELEASE:=3
 
 PKG_HASH:=2fe6146c141639eea4a2625be073387b8de3b8f3d9384ce495c411c7bbd6da61
 PKG_SOURCE_URL_FILE:=v$(PKG_VERSION).tar.gz
@@ -22,7 +22,7 @@ TAR_CMD=$(HOST_TAR) -C $(1) $(TAR_OPTIONS)
 
 define KernelPackage/rkgpu-bifrost
   SUBMENU:=Other modules
-  DEPENDS:=@TARGET_rockchip +kmod-dma-buf
+  DEPENDS:=@TARGET_rockchip +kmod-dma-buf +kmod-rockchip-system-monitor
   VARIANT:=normal
   TITLE:=Rockchip GPU Mali bifrost driver
   FILES:=$(PKG_BUILD_DIR)/drivers/gpu/arm/bifrost/bifrost_kbase.ko
@@ -35,7 +35,7 @@ endef
 
 define KernelPackage/rkgpu-mali400
   SUBMENU:=Other modules
-  DEPENDS:=@TARGET_rockchip +kmod-dma-buf
+  DEPENDS:=@TARGET_rockchip +kmod-dma-buf +kmod-rockchip-system-monitor
   VARIANT:=normal
   TITLE:=Rockchip GPU Mali 400 driver
   FILES:=$(PKG_BUILD_DIR)/drivers/gpu/arm/mali400/mali/mali.ko
@@ -85,7 +85,10 @@ config-y:= CPU_RK3568 \
 	CPU_RK3576 \
 	CPU_RK3562 \
 	CPU_RK3368
-config-m:=
+config-m:= ROCKCHIP_PVTM \
+	ROCKCHIP_IPA \
+	ROCKCHIP_SYSTEM_MONITOR \
+	ROCKCHIP_OPP
 
 ifeq ($(BUILD_VARIANT),csf)
   BUILD_MALI_BIFROST:=y
@@ -117,7 +120,7 @@ ifdef CONFIG_PACKAGE_kmod-rkgpu-mali400
 	MALI_SHARED_INTERRUPTS \
 	MALI_DT \
 	MALI_DEVFREQ \
-	
+
 endif
 endif
 
