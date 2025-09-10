@@ -3,6 +3,11 @@
 #include "rk3576-nvm-power-domain.dtsi"
 
 / {
+	rockchip_system_monitor: rockchip-system-monitor {
+		compatible = "rockchip,system-monitor";
+
+		rockchip,thermal-zone = "littlecore-thermal";
+	};
 	thermal_zones: thermal-zones {
 		/* sensor near the center of the SoC */
 		package_thermal: package-thermal {
