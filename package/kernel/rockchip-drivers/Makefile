@@ -33,7 +33,7 @@ define KernelPackage/rockchip-pvtm
   HIDDEN:=1
   FILES:= \
 	$(PKG_BUILD_DIR)/drivers/soc/rockchip/rockchip_pvtm.ko
-  AUTOLOAD:=$(call AutoProbe,rockchip_pvtm)
+  AUTOLOAD:=$(call AutoLoad,79,rockchip_pvtm)
 endef
 
 define KernelPackage/rockchip-opp-select
@@ -51,7 +51,7 @@ define KernelPackage/rockchip-system-monitor
   HIDDEN:=1
   FILES:= \
 	$(PKG_BUILD_DIR)/drivers/soc/rockchip/rockchip_system_monitor.ko
-  AUTOLOAD:=$(call AutoProbe,rockchip_system_monitor)
+  AUTOLOAD:=$(call AutoLoad,78,rockchip_system_monitor)
 endef
 
 # rockchip-ipa is only for linux before 6.1.0
@@ -111,7 +111,7 @@ define KernelPackage/rknpu
   KCONFIG:=CONFIG_SYNC_FILE=y
   FILES:= \
 	$(PKG_BUILD_DIR)/drivers/rknpu/rknpu.ko
-  AUTOLOAD:=$(call AutoLoad,90,rknpu)
+  AUTOLOAD:=$(call AutoProbe,rknpu)
 endef
 
 define KernelPackage/rknpu/description
