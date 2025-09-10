@@ -10,6 +10,7 @@ PKG_SOURCE_URL_FILE:=v$(PKG_VERSION).tar.gz
 PKG_SOURCE:=mali-drivers-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=https://github.com/jjm2473/mali-drivers/archive/refs/tags/
 
+PKG_BUILD_DEPENDS:=rockchip-drivers
 PKG_BUILD_PARALLEL:=1
 
 PKG_MAINTAINER:=jjm2473 <jjm2473@gmail.com>
