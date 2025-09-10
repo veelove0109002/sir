@@ -3,7 +3,7 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=rockchip-drivers
 PKG_VERSION:=24.11.2
-PKG_RELEASE:=1
+PKG_RELEASE:=2
 
 PKG_HASH:=92a837b8ea38adbd32f2879561322f247fa6606e3d0abe4dd73eb738200a1897
 PKG_SOURCE_URL_FILE:=v$(PKG_VERSION).tar.gz
@@ -11,6 +11,7 @@ PKG_SOURCE:=rockchip-drivers-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=https://github.com/jjm2473/rockchip-drivers/archive/refs/tags/
 
 PKG_BUILD_PARALLEL:=1
+PKG_EXTMOD_SUBDIRS:=drivers
 
 PKG_MAINTAINER:=jjm2473 <jjm2473@gmail.com>
 
@@ -19,6 +20,48 @@ include $(INCLUDE_DIR)/package.mk
 
 TAR_OPTIONS+= --strip-components 1
 TAR_CMD=$(HOST_TAR) -C $(1) $(TAR_OPTIONS)
+
+define KernelPackage/rockchip-sip
+  TITLE:=Rockchip SIP interface
+  HIDDEN:=1
+  FILES:= \
+	$(PKG_BUILD_DIR)/drivers/firmware/rockchip_sip.ko
+endef
+
+define KernelPackage/rockchip-pvtm
+  TITLE:=Rockchip PVTM support
+  HIDDEN:=1
+  FILES:= \
+	$(PKG_BUILD_DIR)/drivers/soc/rockchip/rockchip_pvtm.ko
+  AUTOLOAD:=$(call AutoProbe,rockchip_pvtm)
+endef
+
+define KernelPackage/rockchip-opp-select
+  TITLE:=Rockchip OPP select support
+  HIDDEN:=1
+  DEPENDS:=+kmod-rockchip-pvtm +kmod-rockchip-sip
+  KCONFIG:=CONFIG_PM_DEVFREQ=y
+  FILES:= \
+	$(PKG_BUILD_DIR)/drivers/soc/rockchip/rockchip_opp_select.ko
+endef
+
+define KernelPackage/rockchip-system-monitor
+  TITLE:=Rockchip system monitor support
+  DEPENDS:=+kmod-rockchip-opp-select
+  HIDDEN:=1
+  FILES:= \
+	$(PKG_BUILD_DIR)/drivers/soc/rockchip/rockchip_system_monitor.ko
+  AUTOLOAD:=$(call AutoProbe,rockchip_system_monitor)
+endef
+
+# rockchip-ipa is only for linux before 6.1.0
+define KernelPackage/rockchip-ipa
+  TITLE:=Rockchip IPA support
+  DEPENDS:=+kmod-rockchip-opp-select
+  HIDDEN:=1
+  FILES:= \
+	$(PKG_BUILD_DIR)/drivers/soc/rockchip/rockchip_ipa.ko
+endef
 
 define KernelPackage/rga2
   SUBMENU:=Video Support
@@ -51,7 +94,7 @@ endef
 define KernelPackage/rk_vcodec
   SUBMENU:=Video Support
   TITLE:=RK mpp service framework (rk_vcodec)
-  DEPENDS:=@TARGET_rockchip
+  DEPENDS:=@TARGET_rockchip +kmod-rockchip-system-monitor
   FILES:= \
 	$(PKG_BUILD_DIR)/drivers/video/rockchip/mpp/rk_vcodec.ko
   AUTOLOAD:=$(call AutoProbe,rk_vcodec)
@@ -64,7 +107,7 @@ endef
 define KernelPackage/rknpu
   SUBMENU:=Other modules
   TITLE:=Rockchip RKNPU driver
-  DEPENDS:=@TARGET_rockchip +kmod-drm
+  DEPENDS:=@TARGET_rockchip +kmod-drm +kmod-rockchip-system-monitor
   KCONFIG:=CONFIG_SYNC_FILE=y
   FILES:= \
 	$(PKG_BUILD_DIR)/drivers/rknpu/rknpu.ko
@@ -81,7 +124,11 @@ config-y:= CPU_RK3568 \
 	CPU_RK3576 \
 	CPU_RK3562 \
 	CPU_RK3368
-config-m:=
+config-m:= ROCKCHIP_PVTM \
+	ROCKCHIP_IPA \
+	ROCKCHIP_SIP \
+	ROCKCHIP_SYSTEM_MONITOR \
+	ROCKCHIP_OPP
 
 ifdef CONFIG_PACKAGE_kmod-rga2
   config-m += ROCKCHIP_RGA2
@@ -138,18 +185,16 @@ define Build/Compile
 	+$(MAKE) $(PKG_JOBS) -C "$(LINUX_DIR)" \
 		$(KERNEL_MAKE_FLAGS) \
 		$(PKG_MAKE_FLAGS) \
-		M="$(PKG_BUILD_DIR)/drivers/video/rockchip" \
-		EXTRA_CFLAGS="$(EXTRA_CFLAGS)" \
-		modules
-
-	+$(MAKE) $(PKG_JOBS) -C "$(LINUX_DIR)" \
-		$(KERNEL_MAKE_FLAGS) \
-		$(PKG_MAKE_FLAGS) \
-		M="$(PKG_BUILD_DIR)/drivers/rknpu" \
+		M="$(PKG_BUILD_DIR)/drivers" \
 		EXTRA_CFLAGS="$(EXTRA_CFLAGS)" \
 		modules
 endef
 
+$(eval $(call KernelPackage,rockchip-sip))
+$(eval $(call KernelPackage,rockchip-ipa))
+$(eval $(call KernelPackage,rockchip-pvtm))
+$(eval $(call KernelPackage,rockchip-opp-select))
+$(eval $(call KernelPackage,rockchip-system-monitor))
 $(eval $(call KernelPackage,rga2))
 $(eval $(call KernelPackage,rga3))
 $(eval $(call KernelPackage,rk_vcodec))
