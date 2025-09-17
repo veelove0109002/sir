@@ -118,6 +118,11 @@ define KernelPackage/rknpu/description
   Support Rockchip RKNPU
 endef
 
+define KernelPackage/rknpu/install
+	$(INSTALL_DIR) $(1)/etc/modules-pending.d
+	$(LN) ../modules.d/$(filter-out 0-,$(word 1,$(AUTOLOAD))-)$$(NAME) $(1)/etc/modules-pending.d/$$(NAME)
+endef
+
 config-y:= CPU_RK3568 \
 	CPU_RK3588 \
 	CPU_RK3528 \
