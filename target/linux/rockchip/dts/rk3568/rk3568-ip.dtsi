@@ -8,6 +8,7 @@
 		compatible = "rockchip,system-monitor";
 
 		rockchip,thermal-zone = "cpu-thermal";
+		status = "disabled";
 	};
 
 	otp: otp@fe38c000 {
