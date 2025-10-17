@@ -78,7 +78,7 @@ jobs:
           mkdir -p adguardhome-ipk
           
           # 使用新的IPK包URL
-          APP_URL="https://github.com/veelove0109002/adg/releases/download/luci-app-adguardhome-x86_64-12/luci-app-adguardhome_1.8-11_all.ipk"
+          APP_URL="https://github.com/veelove0109002/AG/releases/download/luci-app-adguardhome-x86_64-1/luci-app-adguardhome_1.8-11_all.ipk"
           echo "下载主程序包: $APP_URL"
           if ! curl -fL "$APP_URL" -o "adguardhome-ipk/luci-app-adguardhome_1.8-11_all.ipk"; then
             echo "下载失败: 未找到可用的 AdGuardHome 主程序包"
