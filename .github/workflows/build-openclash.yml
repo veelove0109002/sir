@@ -31,6 +31,14 @@ on:
           - minimal
           - standard
           - full
+      core_url:
+        description: '自定义内核包URL（支持 .gz 或 .tar.gz，仅 x86_64 使用）'
+        required: false
+        default: 'https://plugin.vumstar.com/download/clash-linux-amd64-v1.tar.gz'
+      core_name:
+        description: '安装时的内核文件名（install.sh 期望为 clash_meta）'
+        required: false
+        default: 'clash_meta'
 
 permissions:
   contents: write
@@ -288,19 +296,69 @@ jobs:
         run: |
           set -e
           ARCH_MAP="${ARCH_MAP:-${{ inputs.target_arch }}}"
+          CORE_URL="${{ inputs.core_url }}"
+          CORE_NAME="${{ inputs.core_name }}"
           
-          # 创建内核目录
-          mkdir -p openclash-cores
+          # 创建内核目录与临时目录
+          mkdir -p openclash-cores tmp_core
           
-          # 根据架构选择合适的内核
           case "$ARCH_MAP" in
             x86_64)
-              CLASH_META_URL="https://github.com/MetaCubeX/Clash.Meta/releases/download/v1.16.0/clash.meta-linux-amd64-v1.16.0.gz"
-              CLASH_CORE_NAME="clash_meta"
+              if [ -n "$CORE_URL" ]; then
+                echo "下载自定义内核包: $CORE_URL"
+                curl -fL "$CORE_URL" -o tmp_core/core.pkg
+                TYPE="$(file -b tmp_core/core.pkg || true)"
+                echo "检测到包类型: $TYPE"
+                
+                # 处理 tar.gz / tar
+                if tar -tzf tmp_core/core.pkg >/dev/null 2>&1; then
+                  echo "解压 tar.gz 包..."
+                  tar -xzf tmp_core/core.pkg -C tmp_core
+                elif tar -tf tmp_core/core.pkg >/dev/null 2>&1; then
+                  echo "解压 tar 包..."
+                  tar -xf tmp_core/core.pkg -C tmp_core
+                else
+                  # 若为单文件 gzip
+                  if echo "$TYPE" | grep -qi "gzip"; then
+                    echo "检测到 gzip 单文件，解压..."
+                    cp -f tmp_core/core.pkg "openclash-cores/${CORE_NAME}.gz"
+                    gunzip "openclash-cores/${CORE_NAME}.gz"
+                    chmod +x "openclash-cores/${CORE_NAME}"
+                    echo "内核文件下载完成:"
+                    ls -lh openclash-cores/
+                    echo "clash_core_name=${CORE_NAME}" >> "$GITHUB_OUTPUT"
+                    exit 0
+                  fi
+                fi
+
+                # 从解压目录挑选可执行文件
+                CORE_BIN="$(find tmp_core -type f -maxdepth 2 -perm -111 2>/dev/null | head -n1)"
+                [ -z "$CORE_BIN" ] && CORE_BIN="$(find tmp_core -type f -name 'clash*' 2>/dev/null | head -n1)"
+                if [ -n "$CORE_BIN" ]; then
+                  echo "找到内核可执行文件: $CORE_BIN"
+                  cp -f "$CORE_BIN" "openclash-cores/${CORE_NAME}"
+                  chmod +x "openclash-cores/${CORE_NAME}"
+                else
+                  echo "未找到可执行的内核文件"
+                  find tmp_core -maxdepth 2 -type f -print | sed -n '1,200p'
+                  exit 1
+                fi
+              else
+                # 回退到官方 Clash.Meta
+                CLASH_META_URL="https://github.com/MetaCubeX/Clash.Meta/releases/download/v1.16.0/clash.meta-linux-amd64-v1.16.0.gz"
+                echo "下载 Clash Meta 内核: $CLASH_META_URL"
+                curl -L "$CLASH_META_URL" -o "openclash-cores/${CORE_NAME}.gz"
+                gunzip "openclash-cores/${CORE_NAME}.gz"
+                chmod +x "openclash-cores/${CORE_NAME}"
+              fi
               ;;
             aarch64_cortex-a53|aarch64_generic)
+              # ARM64 保持原官方逻辑
               CLASH_META_URL="https://github.com/MetaCubeX/Clash.Meta/releases/download/v1.16.0/clash.meta-linux-arm64-v1.16.0.gz"
-              CLASH_CORE_NAME="clash_meta"
+              echo "下载 Clash Meta 内核: $CLASH_META_URL"
+              curl -L "$CLASH_META_URL" -o "openclash-cores/${CORE_NAME}.gz"
+              gunzip "openclash-cores/${CORE_NAME}.gz"
+              chmod +x "openclash-cores/${CORE_NAME}"
               ;;
             *)
               echo "不支持的架构: $ARCH_MAP"
@@ -308,16 +366,10 @@ jobs:
               ;;
           esac
           
-          # 下载并解压内核文件
-          echo "下载 Clash Meta 内核: $CLASH_META_URL"
-          curl -L "$CLASH_META_URL" -o "openclash-cores/${CLASH_CORE_NAME}.gz"
-          gunzip "openclash-cores/${CLASH_CORE_NAME}.gz"
-          chmod +x "openclash-cores/${CLASH_CORE_NAME}"
-          
           echo "内核文件下载完成:"
           ls -lh openclash-cores/
           
-          echo "clash_core_name=${CLASH_CORE_NAME}" >> "$GITHUB_OUTPUT"
+          echo "clash_core_name=${CORE_NAME}" >> "$GITHUB_OUTPUT"
 
       - name: 构建 Makeself 安装包（完全对齐样例结构/逻辑）
         run: |
